@@ -4,6 +4,8 @@ INPUT_INTERVALS: "example_data/test-gene.bed"
 # where shoul results be saved?
 OUT_DIR: 'output'
 
+CORES: 3
+
 # Define mutation categories
 # NOTE: The key is the category name and the value is the variant consequence 
 # SO term, see: https://useast.ensembl.org/info/genome/variation/prediction/predicted_data.html

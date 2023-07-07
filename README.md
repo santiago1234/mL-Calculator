@@ -12,9 +12,10 @@ Requirements:
 
 - VEP
 - snakemake
+- Biopython
 
+NOTES:
 
-R
+- Make sure the local cache file for H. sapiens is installed, using local cache files is the fastest and most efficient way to run the VEP.
 
-- R 4.3.0. 
--  Bioconductor 3.17
+- [VEP installation instructions](https://useast.ensembl.org/info/docs/tools/vep/script/vep_download.html)
