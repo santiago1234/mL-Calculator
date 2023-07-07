@@ -1,0 +1,22 @@
+# The input bed intervals in GRCh38 coordinates
+INPUT_INTERVALS: "example_data/test-gene.bed"
+
+# where shoul results be saved?
+OUT_DIR: 'output/'
+
+# Define mutation categories
+# NOTE: The key is the category name and the value is the variant consequence 
+# SO term, see: https://useast.ensembl.org/info/genome/variation/prediction/predicted_data.html
+MUT_CATEGORIES:
+  synonymous: "synonymous_variant"  
+  missense: "missense_variant"
+  lof: "(stop_gained|stop_lost|start_lost)"  # Use this format for multiple categories: (cat_a|cat_b|cat_c)
+
+# Variant Effect Predictor path to executable
+VEP: "~/ensembl-vep/vep"
+
+# Path to GRCh38 genome
+GENOME: "/data/users/smedina/data-resources/genomes/GRCh38.primary_assembly.genome-nochrprefix.fasta"
+
+# Get mL by gene?
+BY_GENE: True
