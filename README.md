@@ -27,6 +27,16 @@ curl -O https://ftp.ensembl.org/pub/release-109/variation/indexed_vep_cache/homo
 tar xzf homo_sapiens_vep_109_GRCh38.tar.gz
 ```
 
+## Running the pipeline
+
+The input is a set of bed intervals, [see example](example_data/test-gene.bed).
+
+```bash
+snakemake -j4 output/mLs.csv
+```
+
+Parameters can be modified in the [config file](config.yaml).
+
 ## Citation
 
 - [gnomAD mutation model](https://www.nature.com/articles/s41586-020-2308-7)
