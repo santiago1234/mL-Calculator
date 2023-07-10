@@ -1,0 +1,8 @@
+name: mL-Calculator
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - snakemake
+  - pandas
+  - biopython

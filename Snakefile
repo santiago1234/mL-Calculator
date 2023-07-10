@@ -56,3 +56,28 @@ rule predict_variants:
             --compress_output gzip --coding_only  --fields \
             'Uploaded_variation,Location,Allele,Gene,Feature_type,Consequence,Codons'
         """
+
+
+rule process_vep_output:
+    """Remove repeated calls"""
+    input:
+        f'{OUT_DIR}/data/vep.txt.gz'
+    output:
+        f'{OUT_DIR}/data/vep-UNIQ.txt'
+    shell:
+        """
+        python scripts/process_vep_output.py {input} {output}
+        """
+
+rule compute_mL:
+    input:
+        vep = f'{OUT_DIR}/data/vep-UNIQ.txt',
+        mus = 'data/mutation_rate_methylation_bins.txt'
+    output:
+        f'{OUT_DIR}/mLs.csv'
+    shell:
+        """
+        python scripts/compute_ml.py {input.vep} {input.mus} {output}
+        """
+
+

@@ -10,20 +10,24 @@ For supporting categories see:
 
 Requirements:
 
-- VEP
-- snakemake
-- Biopython
+## Installation
 
-NOTES:
-
-- Make sure the local cache file for H. sapiens is installed, using local cache files is the fastest and most efficient way to run the VEP.
+```bash
+env create -f requeriments.yml
+conda activate mL-Calculator
+```
 
 - [VEP installation instructions](https://useast.ensembl.org/info/docs/tools/vep/script/vep_download.html)
 
-## Cache VEP file
+### Cache VEP file
 
 ```bash
 cd $HOME/.vep
 curl -O https://ftp.ensembl.org/pub/release-109/variation/indexed_vep_cache/homo_sapiens_vep_109_GRCh38.tar.gz
 tar xzf homo_sapiens_vep_109_GRCh38.tar.gz
 ```
+
+## Citation
+
+- [gnomAD mutation model](https://www.nature.com/articles/s41586-020-2308-7)
+- [This pipeline was originally developed here](https://www.biorxiv.org/content/10.1101/2023.03.06.531060v1.abstract)
