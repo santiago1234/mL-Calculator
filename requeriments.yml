@@ -6,3 +6,6 @@ dependencies:
   - snakemake
   - pandas
   - biopython
+  - cyvcf2
+  - moments
+  - scikit-allel

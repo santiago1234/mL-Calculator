@@ -33,6 +33,9 @@ The input is a set of bed intervals, [see example](example_data/test-gene.bed).
 
 ```bash
 snakemake -j4 output/mLs.csv
+
+# to get the SFS for the lof category
+snakemake -j1 output/sfs-lof.pkl
 ```
 
 Parameters can be modified in the [config file](config.yaml).
@@ -41,3 +44,4 @@ Parameters can be modified in the [config file](config.yaml).
 
 - [gnomAD mutation model](https://www.nature.com/articles/s41586-020-2308-7)
 - [This pipeline was originally developed here](https://www.biorxiv.org/content/10.1101/2023.03.06.531060v1.abstract)
+
