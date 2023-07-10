@@ -16,8 +16,6 @@ coding_intervals <- getBM(attributes = c('chromosome_name', 'exon_chrom_start', 
                           values = gene_id, 
                           mart = ensembl)
 
-# We are working with ensembl that uses chr prefix
-coding_intervals$chromosome_name <- paste0('chr', coding_intervals$chromosome_name)
 
 # Create a GRanges object from the data frame
 gr <- makeGRangesFromDataFrame(coding_intervals,
