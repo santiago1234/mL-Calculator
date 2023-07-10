@@ -19,3 +19,11 @@ NOTES:
 - Make sure the local cache file for H. sapiens is installed, using local cache files is the fastest and most efficient way to run the VEP.
 
 - [VEP installation instructions](https://useast.ensembl.org/info/docs/tools/vep/script/vep_download.html)
+
+## Cache VEP file
+
+```bash
+cd $HOME/.vep
+curl -O https://ftp.ensembl.org/pub/release-109/variation/indexed_vep_cache/homo_sapiens_vep_109_GRCh38.tar.gz
+tar xzf homo_sapiens_vep_109_GRCh38.tar.gz
+```
