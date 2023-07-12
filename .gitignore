@@ -1,6 +1,8 @@
 ## The .gitignore file specifies things that git should ignore. 
 ## This default template includes entries for R, Python and visual studio
 
+example_data/coding-intervals/
+example_data/mart_export.txt
 ##
 ## Add custom entries below here.
 ##

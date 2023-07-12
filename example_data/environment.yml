@@ -1,0 +1,12 @@
+name: r-env
+channels:
+  - defaults
+  - bioconda
+  - conda-forge
+dependencies:
+  - r-base
+  - r-essentials
+  - bioconductor-biomart
+  - r-magrittr
+  - bioconductor-genomicranges
+  - bioconductor-rtracklayer
