@@ -1,5 +1,5 @@
 # The input bed intervals in GRCh38 coordinates
-INPUT_INTERVALS: "example_data/test-gene.bed"
+INPUT_INTERVALS_PATH: "example_data/coding-intervals"
 
 # where shoul results be saved?
 OUT_DIR: 'output'
@@ -20,11 +20,11 @@ VEP: "~/ensembl-vep/vep"
 # Path to GRCh38 genome
 GENOME: "/data/users/smedina/data-resources/genomes/GRCh38.primary_assembly.genome-nochrprefix.fasta"
 
-# Input VCF to get the SFS
-VCF: "example_data/1TGP_and_50MXB.gene.vcf.gz"
+# Input VCF to get the SFS
+VCF: "example_data/1TGP-vcf/data/yri-ibs.vcf.gz"
 
-# Populations Information. A csv file with columns Samplename (for samples in vcf) and Population.
-POP_INFO: "example_data/popinfo.csv"
+# Populations Information. A csv file with columns Samplename (for samples in vcf) and Population.
+POP_INFO: "example_data/1TGP-vcf/data/popinfo.csv"
 
 # Get mL by gene?
 BY_GENE: True
