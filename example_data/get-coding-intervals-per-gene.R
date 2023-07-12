@@ -30,8 +30,5 @@ get_coding_intervals <- function(gene_id) {
   export.bed(gr, con = paste0('coding-intervals/', gene_id, ".bed"))
 }
 
-
 genes <- read.csv('protein_coding_genes.csv')
-
-
-mclapply(X = genes$`Gene stable ID`, FUN = get_coding_intervals, mc.cores = 6)
+mclapply(X = genes$Gene.stable.ID, FUN = get_coding_intervals, mc.cores = 6)
