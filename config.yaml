@@ -20,5 +20,11 @@ VEP: "~/ensembl-vep/vep"
 # Path to GRCh38 genome
 GENOME: "/data/users/smedina/data-resources/genomes/GRCh38.primary_assembly.genome-nochrprefix.fasta"
 
+# Input VCF to get the SFS
+VCF: "example_data/1TGP_and_50MXB.gene.vcf.gz"
+
+# Populations Information. A csv file with columns Samplename (for samples in vcf) and Population.
+POP_INFO: "example_data/popinfo.csv"
+
 # Get mL by gene?
 BY_GENE: True
