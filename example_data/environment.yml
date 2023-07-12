@@ -7,6 +7,6 @@ dependencies:
   - r-base
   - r-essentials
   - bioconductor-biomart
-  - r-magrittr
+  - r-tidyverse
   - bioconductor-genomicranges
   - bioconductor-rtracklayer

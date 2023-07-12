@@ -1,0 +1,29 @@
+RHOMS = list(range(1, 23))
+
+
+rule sample_vcf:
+    input:
+        vcf = '/data/users/smedina/mxb-genomes/results/data/210713-HardyW-filters/1TGP_and_50MXB-chr{chrn}-snps-vep-mask-HW-GRCh38.vcf.gz',
+        samples = 'data/samples.txt'
+    output:
+        'tmp/yri_ibs-chr{chrn}.vcf.gz',
+        'tmp/yri_ibs-chr{chrn}.vcf.gz.tbi'
+    shell:
+        '''
+        bcftools view -S {input.samples} {input.vcf} |\
+            bcftools view -c1 -Oz -o {output[0]}
+        bcftools index --tbi {output[0]}
+        '''
+
+
+rule vcf:
+    input:
+        expand('tmp/yri_ibs-chr{chrn}.vcf.gz', chrn=RHOMS)
+    output:
+        'data/yri-ibs.vcf.gz',
+        'data/yri-ibs.vcf.gz.tbi'
+    shell:
+        """
+        bcftools concat  {input} -Oz -o {output[0]}
+        bcftools index --tbi {output[0]}
+        """
