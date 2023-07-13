@@ -13,7 +13,7 @@ def get_filename_prefixes(directory):
     
     return filenames
 
-GENES = get_filename_prefixes('example_data/coding-intervals/')[:5]
+GENES = get_filename_prefixes('example_data/coding-intervals/')
 
 configfile: "config.yaml"
 # Load variables from config
