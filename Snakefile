@@ -1,6 +1,19 @@
 """
 Pipeline
 """
+import os
+import glob
+
+def get_filename_prefixes(directory):
+    # Get all .bed files in the directory
+    file_paths = glob.glob(f"{directory}/*.bed")
+    
+    # Extract the filenames (without extensions) from the paths
+    filenames = [os.path.splitext(os.path.basename(path))[0] for path in file_paths]
+    
+    return filenames
+
+GENES = get_filename_prefixes('example_data/coding-intervals/')[:5]
 
 configfile: "config.yaml"
 # Load variables from config
@@ -84,59 +97,79 @@ rule compute_mL:
 
 ###############################
 ##### SFS
-###############################
-#
-#rule vcf_region:
-#    """
-#    Subset the VCF to the input interval
-#    """
-#    input:
-#        vcf = VCF,
-#        vcf_index = f"{VCF}.tbi",
-#        intervals = INPUT_INTERVALS_PATH
-#    output:
-#        f"{OUT_DIR}/data/vcf-gene.vcf"
-#    shell:
-#        """
-#        bcftools view -R {input.intervals} {input.vcf} >{output}
-#        """
-#
-#def get_variant_so_term(wildcards):
-#    """
-#    Get the SO term for the variant
-#    """
-#    catego = MUT_CATEGORIES[wildcards.vart]
-#    return catego.replace("(", "").replace(")", "").replace("|", ",")
-#
-#
-#rule variant_vcf:
-#    """
-#    get all the SNPs that are from
-#    a particular variant or set of variants
-#    """
-#    input:
-#        f"{OUT_DIR}/data/vcf-gene.vcf"
-#    output:
-#        f"{OUT_DIR}/data/vcf-gene_variant-{{vart}}.vcf"
-#    params:
-#        so_term = get_variant_so_term
-#    shell:
-#        """
-#        python scripts/vcf_variant_category.py {input} {params.so_term} {output}
-#        """
-#
-#
-#rule sfs:
-#    input:
-#        vcf = f"{OUT_DIR}/data/vcf-gene_variant-{{vart}}.vcf",
-#        poplabels = POP_INFO
-#    output:
-#        f"{OUT_DIR}/sfs-{{vart}}.pkl"
-#    shell:
-#        """
-#        python scripts/jsfs-nonPolarized.py {input.vcf} {input.poplabels} {output}
-#        """
-#        
-#        
-#
-#
+#############################
+
+
+rule vcf_region:
+    """
+    Subset the VCF to the input interval
+    """
+    input:
+        vcf = VCF,
+        vcf_index = f"{VCF}.tbi",
+        intervals = f'{INPUT_INTERVALS_PATH}/{{gene_id}}.bed'
+    output:
+        temp(f"{OUT_DIR}/vcfs/{{gene_id}}.vcf")
+    shell:
+        """
+        bcftools view -R {input.intervals} {input.vcf} >{output}
+        """
+
+        
+rule remove_cpgs:
+    input:
+        vcf = f"{OUT_DIR}/vcfs/{{gene_id}}.vcf",
+        genome = GENOME
+    output:
+        temp(f"{OUT_DIR}/vcfs/nonCpGs-{{gene_id}}.vcf"),
+        temp(f"{OUT_DIR}/vcfs/stats-{{gene_id}}.txt")
+    shell:
+        """
+        python scripts/removeCpGsites.py {input.vcf} \
+            {input.genome} {output[0]} {output[1]}
+        """
+
+def get_variant_so_term(wildcards):
+    """
+    Get the SO term for the variant
+    """
+    catego = MUT_CATEGORIES[wildcards.vart]
+    return catego.replace("(", "").replace(")", "").replace("|", ",")
+
+
+rule variant_vcf:
+    """
+    get all the SNPs that are from
+    a particular variant or set of variants
+    """
+    input:
+        f"{OUT_DIR}/vcfs/nonCpGs-{{gene_id}}.vcf",
+    output:
+        temp(f"{OUT_DIR}/vcfs/nonCpGs-{{gene_id}}-var_{{vart}}.vcf")
+    params:
+        so_term = get_variant_so_term
+    shell:
+        """
+        python scripts/vcf_variant_category.py {input} {params.so_term} {output}
+        """
+
+
+rule sfs:
+    input:
+        vcf = f"{OUT_DIR}/vcfs/nonCpGs-{{gene_id}}-var_{{vart}}.vcf",
+        poplabels = POP_INFO
+    output:
+        f"{OUT_DIR}/sfs/{{gene_id}}-var_{{vart}}.pkl"
+    shell:
+        """
+        python scripts/jsfs-nonPolarized.py {input.vcf} {input.poplabels} {output}
+        """
+        
+
+rule all:
+    input:
+        expand(f"{OUT_DIR}/sfs/{{gene_id}}-var_{{vart}}.pkl", gene_id=GENES, vart=['lof', 'missense', 'synonymous']),
+        expand(f'{OUT_DIR}/mLs/{{gene_id}}.csv', gene_id=GENES)
+        
+
+

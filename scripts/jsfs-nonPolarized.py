@@ -53,6 +53,9 @@ def load_data(vcf, poplabs):
     if 'Population' not in poplabs.columns:
         raise ValueError('Population column not in poplabs')
 
+    # empty vcf
+    if vcf is None:
+        return vcf, poplabs
     # check all samples in poplabs present in vcf
     for s in poplabs['Samplename'].tolist():
         if s not in vcf['samples']:
@@ -135,21 +138,26 @@ def populate_sfs_with_variants(sfs, allele_counts,  index_to_pops):
 print('loading data ...')
 vcf, poplabs = load_data(vcf, poplabs)
 
+# Check if vcf is None
+if vcf is None:
+    with open(out_spectrum, 'w') as spec_file:
+        spec_file.write("empty SFS")
+    print('empty SFS/ THERE ARE NOT VARIANTS')
 
-print('computing jSFS ...')
-allele_counts = count_allels(vcf, poplabs)
-sfs, index_to_pops, pops_to_index = initialize_jsfs(poplabs)
-sfs = populate_sfs_with_variants(sfs, allele_counts, index_to_pops)
+else:
+    print('computing jSFS ...')
+    allele_counts = count_allels(vcf, poplabs)
+    sfs, index_to_pops, pops_to_index = initialize_jsfs(poplabs)
+    sfs = populate_sfs_with_variants(sfs, allele_counts, index_to_pops)
 
-# order pops by index
-pop_ids = [index_to_pops[i] for i in range(len(index_to_pops))]
+    # order pops by index
+    pop_ids = [index_to_pops[i] for i in range(len(index_to_pops))]
 
-print('saving spectrum ...')
-# save spectrum
-spectrum = moments.Spectrum(sfs, pop_ids=pop_ids, data_folded=False)
+    print('saving spectrum ...')
+    # save spectrum
+    spectrum = moments.Spectrum(sfs, pop_ids=pop_ids, data_folded=False)
 
-spec_file = open(out_spectrum, 'wb')
-pickle.dump(spectrum, spec_file)
-spec_file.close()
+    with open(out_spectrum, 'wb') as spec_file:
+        pickle.dump(spectrum, spec_file)
 
-print('done ...')
+    print('done ...')
